@@ -14,13 +14,14 @@ public class GoogleSearchTestNGWithBaseTest extends TestNGBase{
 	@Test
 	public void testGoogleSearch() throws InterruptedException {
 		//Enter string in searchbox
+		
 		String searchstring = "Selenium";
 		searchbox.sendKeys(searchstring);
 		
 		//Submit the search
 		searchbox.submit();
 		
-		waitForSuggestionsToLoad(searchstring.toLowerCase());
+		waitForTitleToContain(searchstring);
 		
 		//Verify that the title of new page contains the searchstring
 		String expected = searchstring + " - Google Search";
@@ -29,6 +30,7 @@ public class GoogleSearchTestNGWithBaseTest extends TestNGBase{
 		Assert.assertEquals(actual, expected);
 	}
 	
+	
 	//2. Suggestions List
 	@Test
 	public void testSuggestions() {
@@ -36,7 +38,10 @@ public class GoogleSearchTestNGWithBaseTest extends TestNGBase{
 		String searchstring = "maven";
 		searchbox.sendKeys(searchstring);
 		
-		waitForTextToBePresentInElement(By.xpath("//li[@data-view-type='1']//div[@role='option']"), searchstring);
+		//By is a class in Selenium. It is also called as Locator class
+		By e = By.xpath("//li[@data-view-type='1']//div[@role='option']");
+		
+		waitForTextToBePresentInElement(e, searchstring);
 		
 		suggestionslist = driver.findElements(By.xpath("//li[@class='sbct' and not(@id='YMXe')]"));
 		

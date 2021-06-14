@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -17,39 +18,57 @@ public class TestNGBase {
 	protected WebDriver driver;
 	protected WebElement searchbox;
 	protected WebElement searchbutton;
-	
+	protected String browser;
 	
 	@BeforeTest
-	public void openBrowser() {
+	protected void openBrowser() {
+		browser = "Firefox";
 		System.setProperty("webdriver.chrome.driver", "C:\\Tools\\Selenium\\chromedriver.exe"); //Windows OS
 		//The following path is valid for MAC and Linux OS
 		System.setProperty("webdriver.chrome.driver", "/Users/ameya/Tools/Selenium/ChromeDriver91/chromedriver");
 		System.setProperty("webdriver.gecko.driver", "/Users/ameya/Tools/Selenium/geckodriver");
-		driver = new FirefoxDriver();
+		switch (browser) {
+			case "Firefox":
+				driver = new FirefoxDriver();
+				break;
+			case "Chrome":
+				driver = new ChromeDriver();
+				break;
+			default:
+				System.out.println("You requested for another browser which is not available. Hence running this script on Google Chrome");
+				driver = new ChromeDriver();
+				break;
+		}
+		
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 	}
 	
 	@AfterTest
-	public void tearDown() {
+	protected void tearDown() {
 		driver.quit();
 	}
 
 	@BeforeMethod
-	public void resetBrowser() {
+	protected void resetBrowser() {
 		driver.navigate().to("https://www.google.com");
 		searchbox = driver.findElement(By.name("q"));
 		searchbutton = driver.findElement(By.name("btnK"));
 	}
 	
-	public void waitForSuggestionsToLoad(String searchstring) {
+	protected void waitForSuggestionsToLoad(String searchstring) {
 		WebDriverWait myWait = new WebDriverWait(driver, 5);
 		myWait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//li[@data-view-type='1']//div[@role='option']"), searchstring));
-		
 	}
 	
-	public void waitForTextToBePresentInElement(By e, String text) {
+	protected void waitForTextToBePresentInElement(By e, String text) {
 		WebDriverWait myWait = new WebDriverWait(driver, 5);
 		myWait.until(ExpectedConditions.textToBePresentInElementLocated(e, text));
 		
 	}
+	
+	protected void waitForTitleToContain(String searchstring) {
+		WebDriverWait myWait = new WebDriverWait(driver, 5);
+		myWait.until(ExpectedConditions.titleContains(searchstring));
+	}
+
 }

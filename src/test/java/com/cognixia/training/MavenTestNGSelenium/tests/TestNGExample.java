@@ -39,7 +39,7 @@ public class TestNGExample {
 		System.out.println("Name is: "+name);
 	}
 	
-	@BeforeMethod
+	@BeforeMethod //This will be called before every test method
 	public void beforeMethod() {
 		System.out.println("Inside Before Method");
 	}

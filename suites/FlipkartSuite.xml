@@ -1,0 +1,41 @@
+<suite name = "All Tests Suite" parallel = "tests" thread-count="3">
+	
+	<test name = "Flipkart Tests">
+	  
+	  <!-- <parameter name = "browser" value = "Firefox"></parameter>  -->
+	
+		<classes>
+		
+			<class name = "com.cognixia.training.MavenTestNGSelenium.tests.FlipkartWorkflowTest">
+				@BeforeMethod
+				<method>
+				</method>
+			</class>
+			
+		</classes>
+	
+	</test>
+	
+	<test name = "Google Search Tests">
+	
+		<classes>
+		
+			<class name = "com.cognixia.training.MavenTestNGSelenium.tests.GoogleTest"></class>
+			<class name = "com.cognixia.training.MavenTestNGSelenium.tests.GoogleSearchTestNGWithBaseTest"></class>
+			
+		</classes>
+	
+	</test>
+	
+	<test name = "Data Driven Tests">
+	
+		<classes>
+		
+			<class name = "com.cognixia.training.MavenTestNGSelenium.tests.GoogleSearchDataDriven"></class>
+			
+		</classes>
+	
+	</test>
+	
+
+</suite>

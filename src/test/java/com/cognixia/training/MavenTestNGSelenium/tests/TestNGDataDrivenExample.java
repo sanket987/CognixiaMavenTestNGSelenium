@@ -22,8 +22,7 @@ public class TestNGDataDrivenExample {
 	@DataProvider
 	public Object[][] getDataFromExcel() throws IOException {
 		return ReadFromExcel.readExcelData("resources/testdata.xlsx");
-	}
-	
+	}	
 	
 	@DataProvider					// A data provider in TestNG needs to return a 2 dimensional Object Array
 	public Object[][] getData() {

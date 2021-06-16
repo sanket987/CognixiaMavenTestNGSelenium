@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -15,6 +16,7 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Ignore;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 public class GoogleTest {
@@ -30,13 +32,18 @@ public class GoogleTest {
 		//The following path is valid for MAC and Linux OS
 		System.setProperty("webdriver.chrome.driver", "/Users/ameya/Tools/Selenium/ChromeDriver91/chromedriver");
 		System.setProperty("webdriver.gecko.driver", "/Users/ameya/Tools/Selenium/geckodriver");
-		driver = new FirefoxDriver();
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		
 	}
 
 	//1. Searching Google
 	@Test
-	public void testGoogleSearch() throws InterruptedException {
+	@Parameters({"browser","message"})
+	public void testGoogleSearch(String browser, String message) throws InterruptedException {
+		
+		openBrowser(browser);
+		
+		System.out.println(message);
+		
 		//Enter string in searchbox
 		String searchstring = "Selenium";
 		searchbox.sendKeys(searchstring);
@@ -58,7 +65,9 @@ public class GoogleTest {
 	
 	//2. Suggestions List
 	@Test
-	public void testSuggestions() {
+	@Parameters({"browser"})
+	public void testSuggestions(String browser) {
+		openBrowser(browser);
 		
 		String searchstring = "maven";
 		searchbox.sendKeys(searchstring);
@@ -75,7 +84,11 @@ public class GoogleTest {
 	
 	//3. Results Page
 	@Test
-	public void testResultsPage() {
+	@Parameters({"browser"})
+	public void testResultsPage(String browser) {
+		
+		openBrowser(browser);
+		
 		String searchstring = "maven";
 		
 		searchbox.sendKeys(searchstring);
@@ -96,8 +109,15 @@ public class GoogleTest {
 		driver.quit();
 	}
 	
-	@BeforeMethod
-	public void resetBrowser() {
+	
+	public void openBrowser(String browser) {
+		if(browser.equals("Chrome")) {
+			driver = new ChromeDriver();
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		} else {
+			driver = new FirefoxDriver();
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		}
 		driver.navigate().to("https://www.google.com");
 		searchbox = driver.findElement(By.name("q"));
 		searchbutton = driver.findElement(By.name("btnK"));
